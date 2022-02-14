@@ -5,9 +5,13 @@ import (
 	"fmt"
 )
 
-type Md5 struct {
+type Md5Hasher struct {
 }
 
-func (m *Md5) Hash(message []byte) string {
+func NewMd5Hasher() Hasher {
+	return &Md5Hasher{}
+}
+
+func (m *Md5Hasher) Hash(message []byte) string {
 	return fmt.Sprintf("%x", md5.Sum(message))
 }

@@ -1,2 +1,9 @@
 # md5_response_hasher
-cli utility to hash responses for HTTP requests using MD5
+
+## Summary
+
+This repo contains code for CLI utility to hash responses from HTTP requests for provided URLs
+
+## Build
+
+This repo supports Makefile which is used for building and testing

@@ -23,26 +23,25 @@ func main() {
 
 	concurrently := make(chan struct{}, *parallel)
 	client := transport.NewClient()
+	hasher := hash.NewMd5Hasher()
 	wg := sync.WaitGroup{}
 	for i := 0; i < len(urls); i++ {
 		wg.Add(1)
 		go func(i int) {
 			defer wg.Done()
 			concurrently <- struct{}{}
-			workUnit(urls[i], client)
+			workUnit(urls[i], client, hasher)
 			<-concurrently
 		}(i)
 	}
 	wg.Wait()
 }
 
-func workUnit(url string, client *transport.Client) {
+func workUnit(url string, client *transport.Client, hasher hash.Hasher) {
 	b, err := client.SendRequest(url)
 	if err != nil {
 		fmt.Printf("url: %v processing ended with error: %v: ", url, err)
 		return
 	}
-	m5 := hash.Md5{}
-	h := m5.Hash(b)
-	fmt.Println(url + " " + h)
+	fmt.Println(url + " " + hasher.Hash(b))
 }

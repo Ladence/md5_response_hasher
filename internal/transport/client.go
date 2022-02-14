@@ -3,6 +3,7 @@ package transport
 import (
 	"io"
 	"net/http"
+	"strings"
 )
 
 type Client struct {
@@ -16,6 +17,9 @@ func NewClient() *Client {
 }
 
 func (c *Client) SendRequest(url string) ([]byte, error) {
+	if !strings.HasPrefix(url, "https://") && !strings.HasPrefix(url, "http://") {
+		url = "https://" + url
+	}
 	resp, err := c.client.Get(url)
 	if err != nil {
 		return nil, err
